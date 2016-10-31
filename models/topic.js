@@ -23,6 +23,23 @@
         })
     };
 
+    exports.findAllByLimit = function (page, limit, cb) {
+        var total_length = 0;
+        var page_num = 0;  //总页数
+        var from = 0;     // 开始位置
+        var to = 0;       // 终位置
+        Topic.find({}, function (err, docs) {
+            if(err) {
+                console.log(err);
+            }
+            total_length = docs.length;
+            page_num = Math.ceil(total_length / limit);
+            from = (page-1) * limit;
+            var query = Topic.find({}).sort('-create_at').skip(from).limit(limit);
+            query.exec(cb);
+        });
+    };
+
     exports.findArticleByTitle = function (title, cb) {
         Topic.findOne({title: title}, function (err, doc) {
             if(err) {

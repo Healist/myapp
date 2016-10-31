@@ -417,12 +417,22 @@ router.post("/pubArticle",function (req, res) {
 router.get("/articles/:page/:limit", function (req, res) {
     var page = req.params.page;
     var limit = req.params.limit;
-    Topic.findAll(function (docs) {
-        if(docs != null) {
-            res.send({status: 200, body: docs});
-        }
-    })
 
+    page = parseInt(page);
+    limit = parseInt(limit);
+    // Topic.findAll(function (docs) {
+    //     if(docs != null) {
+    //         res.send({status: 200, body: docs});
+    //     }
+    // });
+
+    Topic.findAllByLimit(page, limit, function (err, docs) {
+        if(err) {
+            console.log(err);
+            res.send(400);
+        }
+        res.send({status: 200, body: docs});
+    });
 });
 
 /* 获取文章详情 */
