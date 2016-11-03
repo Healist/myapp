@@ -20,7 +20,7 @@ router.post('/register', function (req, res) {
   } else {
     //查找是否已经有该用户名
       Account.findByName(username, function (account) {
-         if(account == null || account == "") {
+         if(account) {
              res.send({status: 200, msg: "exist"});
          }  else {
              //orm实例化注册对象
