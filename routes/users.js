@@ -18,16 +18,25 @@ router.post('/register', function (req, res) {
   if(username==null || password==null || email == null) {
     res.send(400);
   } else {
-    //orm实例化注册对象
-    //noinspection JSUnresolvedVariable
-      Account.register(email, password, username, function (err) {
-        if(err) {
-            console.log(err);
-            res.send(400);
-        }
-    });
-    res.send(200);
-  }
+    //查找是否已经有该用户名
+      Account.findByName(username, function (account) {
+         if(account == null || account == "") {
+             res.send({status: 200, msg: "exist"});
+         }  else {
+             //orm实例化注册对象
+             //noinspection JSUnresolvedVariable
+             Account.register(email, password, username, function (err) {
+                 if(err) {
+                     console.log(err);
+                     res.send(400);
+                 } else {
+                     res.send({status: 200, msg: "success"});
+                     res.send(200);
+                 }
+             });
+         }
+      });
+   }
 });
 
 router.post('/login', function (req, res) {

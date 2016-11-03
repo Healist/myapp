@@ -44,7 +44,7 @@ var Topic = new mongoose.Schema({
 });
 
 var AccountSchema = new mongoose.Schema({
-    email: { type: String, unique: true },
+    email: { type: String},
     username: { type: String, unique: true },
     password: { type:String },
     photoUrl: { type:String },
