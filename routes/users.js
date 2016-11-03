@@ -19,7 +19,7 @@ router.post('/register', function (req, res) {
     res.send(400);
   } else {
     //查找是否已经有该用户名
-      Acccount.findByName(username, function (account) {
+      Account.findByName(username, function (account) {
          if(account == null || account == "") {
              res.send({status: 200, msg: "exist"});
          }  else {
