@@ -898,6 +898,37 @@ router.get('/tags', function (req, res) {
    });
 });
 
+router.get('/category', function (req, res) {
+    var arr = [];
+    var nameList = [];
+    var result = [];
+
+   Topic.findAll(function (topics) {
+       if(topics) {
+            topics.forEach(function (item) {
+               if(nameList.indexOf(item.type)<0) {
+                   nameList.push(item.type);
+                   arr.push(item.type);
+                   arr.push(1);
+                   arr.push(item.visit_count);
+               } else {
+                   var index = nameList.indexOf(item.type) + 1;
+                   arr[index] = arr[index] + 1;
+                   arr[index+1] = arr[index+1] + item.visit_count;
+               }
+            });
+           arr.forEach(function (item, index) {
+               if((index % 3)==0) {
+                   result.push({category: item, counts: arr[index+1], visit_count: arr[index+2]});
+               }
+           });
+           res.send({status: 200, message: result});
+       } else {
+           res.send(400);
+       }
+   })
+});
+
 router.get('/daily', function (req, res) {
     var result = [];
 
